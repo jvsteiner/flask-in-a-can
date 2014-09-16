@@ -10,17 +10,20 @@
 
 3. Install dependencies:
 
-    $ pip install -r requirements.text
+    $ pip install -r requirements.txt
 
 4. Copy the example email config and edit the values, use env.py in production to override development settings:
 
     $ cp env/email.py.example config/email.py
+
     $ cp env/env.py.example config/env.py
 
 5. Initialize, migrate and upgrade the database:
 
     $ python app.py db init
+
     $ python app.py db migrate
+
     $ python app.py db upgrade
 
 5. Start the app:
@@ -30,11 +33,22 @@
 NOTE: layout.html uses a _scripts.html helper that references several javascript libraries that I like to use:
 
 twitter bootstrap 3.2.0
+
 jquery 1.8.2
+
 knockout.js 2.2.1
+
 knockout mapping plugin
 
 The helper is set to use a CDN link when config.PRODUCTION == True, and serve from /static otherwise.  You will need to obtain local copies to work in development mode.
 
 This project includes templates for registration, signin, password reset, password change, and user profile
-I based it off mattupstate, who owns flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
+I based it off mattupstate/flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
+
+To create an initial admin user, populate the config/email.py with working smtp details, then signup.
+Use a db editor, like sqlitebrowser, to add an admin role record in the table called Role.
+Your first user should have id=1, and your new admin Role also has id=1. 
+Create a new record in roles_users, where user_id=1 and role_id=1.
+Your new user is now an admin, and you never have to do this again, as new roles can be created and assigned via the admin interface on localhost:5000/admin using your login.
+
+There's probably a better way to do this, i'm open to suggestions, but this was pretty easy for me.
