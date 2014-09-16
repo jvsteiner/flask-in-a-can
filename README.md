@@ -37,3 +37,4 @@ knockout mapping plugin
 The helper is set to use a CDN link when config.PRODUCTION == True, and serve from /static otherwise.  You will need to obtain local copies to work in development mode.
 
 This project includes templates for registration, signin, password reset, password change, and user profile
+I based it off mattupstate, who owns flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
