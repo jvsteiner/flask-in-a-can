@@ -1,4 +1,13 @@
 *.pyc
-config/*.py
 !config/__init__.py
 !config/*.example
+venv/
+static/*
+config/*
+tmp/*
+!static/custom.js
+!static/style.css
+env/*
+migrations/*
+!env/email.py.example
+!env/env.py.example

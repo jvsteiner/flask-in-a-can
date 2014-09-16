@@ -1,16 +1,21 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 
-{% block content %}
-{% include "security/_messages.html" %}
-<h1>Custom Login Form</h1>
-<form action="{{ url_for_security('login') }}" method="POST" name="login_form">
-  {{ login_form.hidden_tag() }}
-  {{ render_field_with_errors(login_form.email) }}
-  {{ render_field_with_errors(login_form.password) }}
-  {{ render_field_with_errors(login_form.remember) }}
-  {{ render_field(login_form.next) }}
-  {{ render_field(login_form.submit) }}
-</form>
-{% include "security/_menu.html" %}
+{% block body %}
+<div class="row">
+  <div class="form-group col-lg-3 col-md-3 col-sm-3">
+    {% include "security/_messages.html" %}
+    <h2>Sign In</h2>
+    <form action="{{ url_for_security('login') }}" method="POST" name="login_form">
+
+      {{ login_form.hidden_tag() }}
+      {{ render_field_with_errors(login_form.email, class_="form-control") }}
+      {{ render_field_with_errors(login_form.password, class_="form-control") }}
+      {{ render_field_with_errors(login_form.remember, class_="form-control") }}
+      {{ render_field(login_form.next) }}
+      {{ render_field(login_form.submit, class_="btn btn-primary") }}
+    </form>
+    {% include "security/_menu.html" %}
+  </div>
+</div>
 {% endblock %}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	{% if config.PRODUCTION %}
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	{% else %}
+		<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+	{% endif %}
+	<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{{ url_for('index') }}">Flask in a Can</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">Link</a></li>
+				<li><a href="#">Link</a></li>
+				<li><a href="#">Link</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if current_user.is_authenticated() %}
+				<li><a href="{{ url_for('profile') }}">My Account</a></li>
+				<li><a href="{{ url_for('security.logout') }}">Sign Out</a></li>
+				{% else %}
+				<li><a href="{{ url_for('security.login') }}">Sign In</a></li>
+				<li><a href="{{ url_for('security.register') }}">Sign Up</a></li>
+				{% endif %}
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+<div class="page">
+	<div class="container">
+		{% block body %}{% endblock %}
+	</div>
+</div>
+<div id="footer">
+	<div class="container">
+		<p class="muted credit">Example courtesy <a href="#">Your Footer info</a>.</p>
+	</div>
+</div>
+</html>

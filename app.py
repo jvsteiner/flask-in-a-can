@@ -1,27 +1,38 @@
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask.ext.babel import Babel
 from flask.ext.mail import Mail
+from flask.ext.bcrypt import *
+from flask.ext.admin import Admin, BaseView, expose
+from flask.ext.admin.contrib.sqla import ModelView
+from flask.ext.admin.contrib.fileadmin import FileAdmin
+import os.path as op
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore, \
-     UserMixin, RoleMixin
+from flask.ext.script import Shell, Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, LoginForm, \
+        RegisterForm, ForgotPasswordForm, current_user, login_required, url_for_security
+from flask.ext.security.forms import ChangePasswordForm
 
 # Create app
 app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = 'super-secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/db.sqlite'
-app.config['DEFAULT_MAIL_SENDER'] = 'info@site.com'
-app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURITY_CONFIRMABLE'] = True
-app.config['SECURITY_RECOVERABLE'] = True
-app.config.from_object('config.email')
+app.config.from_object('config.config')
+app.config.from_object('env.env') #overwrites config.config for production server
+app.config.from_object('env.email') #overwrites config.config for production server
 
 # Setup mail extension
 mail = Mail(app)
 
 # Setup babel
 babel = Babel(app)
+
+# useful for a separate production servers
+def my_app(environ, start_response): 
+    path = environ["PATH_INFO"]  
+    if path == "/":  
+        return app(environ, start_response)     
+    else:  
+        return app(environ, start_response) 
 
 @babel.localeselector
 def get_locale():
@@ -33,8 +44,19 @@ def get_locale():
     rv = session.get('lang', 'en')
     return rv
 
+@app.context_processor
+def inject_userForms():
+    return dict(login_form=LoginForm(), register_user_form=RegisterForm(), \
+        forgot_password_form=ForgotPasswordForm(), change_password_form=ChangePasswordForm())
+
 # Create database connection object
+def _make_context():
+    return dict(app=app, mail=mail, db=db, babel=babel, security=security, admin=admin)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+manager.add_command("shell", Shell(make_context=_make_context))
 
 # Define models
 roles_users = db.Table('roles_users',
@@ -62,12 +84,35 @@ class User(db.Model, UserMixin):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
-db.create_all()
+# db.create_all()
 
 # Views
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
+@app.route('/profile')
+def profile():
+    if current_user.is_authenticated():
+        return render_template('profile.html')
+    else:
+        return redirect(url_for_security('login'))
+        
+admin = Admin(app)
+
+# Admin Views
+class MyModelView(ModelView):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+class MyFileView(FileAdmin):
+    def is_accessible(self):
+        return current_user.has_role('admin')
+
+admin.add_view(MyModelView(User, db.session))
+admin.add_view(MyModelView(Role, db.session))
+path = op.join(op.dirname(__file__), 'static')
+admin.add_view(MyFileView(path, '/static/', name='Static Files'))
+
 if __name__ == '__main__':
-    app.run()
+    manager.run()

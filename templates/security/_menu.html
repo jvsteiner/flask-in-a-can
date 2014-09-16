@@ -1,0 +1,13 @@
+{% if security.registerable or security.recoverable or security.confirmabled %}
+<div class="btn-group">
+  {% if not (current_user.is_authenticated() or request.path == "/signin") %}
+  <a class="btn btn-secondary btn-default" type="button" href="{{ url_for_security('login') }}">Sign In</a>
+  {% endif %}
+  {% if security.recoverable and not request.path == "/reset" %}
+  <a class="btn btn-secondary btn-default" type="button" href="{{ url_for_security('forgot_password') }}">Reset Password</a>
+  {% endif %}
+  {% if current_user.is_authenticated() and not request.path == "/change" %}
+  <a class="btn btn-secondary btn-default" type="button" href="{{ url_for_security('change_password') }}">Change Password</a>
+  {% endif %}
+</div>
+{% endif %}

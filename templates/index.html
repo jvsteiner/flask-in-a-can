@@ -1,5 +1,14 @@
-{% extends "base.html" %}
-
-{% block content %}
-Home Page
+{% extends "layout.html" %}
+{% block body %}
+<div id="main">
+	<div class="row">
+		<div class="col-lg-3 col-md-3 col-sm-3">
+			<p>Front Page Content goes here!</p>
+		</div>
+	</div>
+</div>
+<body>
+	{% include "_scripts.html" %}
+	<script src="{{ url_for('static', filename='custom.js') }}"></script>
+</body>
 {% endblock %}
