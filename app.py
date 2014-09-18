@@ -103,11 +103,13 @@ admin = Admin(app)
 # Admin Views
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.has_role('admin')
+        return True  # remove
+        # return current_user.has_role('admin')  # uncomment to lock down admin
 
 class MyFileView(FileAdmin):
     def is_accessible(self):
-        return current_user.has_role('admin')
+        return True  # remove
+        # return current_user.has_role('admin')  # uncomment to lock down admin
 
 admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Role, db.session))

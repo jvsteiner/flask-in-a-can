@@ -45,10 +45,6 @@ The helper is set to use a CDN link when config.PRODUCTION == True, and serve fr
 This project includes templates for registration, signin, password reset, password change, and user profile
 I based it off mattupstate/flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
 
-To create an initial admin user, populate the config/email.py with working smtp details, then signup.
-Use a db editor, like sqlitebrowser, to add an admin role record in the table called Role.
-Your first user should have id=1, and your new admin Role also has id=1. 
-Create a new record in roles_users, where user_id=1 and role_id=1.
-Your new user is now an admin, and you never have to do this again, as new roles can be created and assigned via the admin interface on localhost:5000/admin using your login.
-
-There's probably a better way to do this, i'm open to suggestions, but this was pretty easy for me.
+To create an initial user, populate the config/email.py with working smtp details, then signup.
+use the admin interface at localhost:5000/admin to add an admin role, and grant it to your user.
+You can then swap out the is_accessible definitions in the admin views to prevent non-admin users from acessing the admin interface.
