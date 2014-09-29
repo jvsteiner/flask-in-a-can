@@ -6,6 +6,5 @@ tmp/*
 !static/style.css
 env/*
 !env/__init__.py
-migrations/*
 !env/email.py.example
 !env/env.py.example
