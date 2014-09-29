@@ -20,6 +20,8 @@
 
 5. Initialize, migrate and upgrade the database:
 
+    $ mkdir tmp
+
     $ python app.py db migrate
 
     $ python app.py db upgrade
