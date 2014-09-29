@@ -42,6 +42,10 @@ knockout mapping plugin 2.4.1
 
 The helper is set to use a CDN link when config.PRODUCTION == True, and serve from /static otherwise.  You will need to obtain local copies to work offline in development mode (or change config.PRODUCTION = False and work online).
 
+    $ chmod u+x getjs.sh 
+
+    $ ./getjs.sh
+
 This project includes templates for registration, signin, password reset, password change, and user profile
 I based it off mattupstate/flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
 
