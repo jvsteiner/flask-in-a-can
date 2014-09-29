@@ -14,9 +14,9 @@
 
 4. Copy the example email config and edit the values, use env.py in production to override development settings:
 
-    $ cp env/email.py.example config/email.py
+    $ cp env/email.py.example env/email.py
 
-    $ cp env/env.py.example config/env.py
+    $ cp env/env.py.example env/env.py
 
 5. Initialize, migrate and upgrade the database:
 

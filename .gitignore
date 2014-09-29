@@ -1,9 +1,7 @@
 *.pyc
-!config/__init__.py
-!config/*.example
+!env/__init__.py
 venv/
 static/*
-config/*
 tmp/*
 !static/custom.js
 !static/style.css
