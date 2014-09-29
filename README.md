@@ -22,6 +22,8 @@
 
     $ python app.py db init
 
+    $ mkdir tmp
+
     $ python app.py db migrate
 
     $ python app.py db upgrade
@@ -38,9 +40,9 @@ jquery 1.8.2
 
 knockout.js 2.2.1
 
-knockout mapping plugin
+knockout mapping plugin 2.4.1
 
-The helper is set to use a CDN link when config.PRODUCTION == True, and serve from /static otherwise.  You will need to obtain local copies to work in development mode.
+The helper is set to use a CDN link when config.PRODUCTION == True, and serve from /static otherwise.  You will need to obtain local copies to work offline in development mode (or change config.PRODUCTION = False and work online).
 
 This project includes templates for registration, signin, password reset, password change, and user profile
 I based it off mattupstate/flask-security-example, and added some other functionality that I commonly use.  Hope you find it helpful.
@@ -48,3 +50,5 @@ I based it off mattupstate/flask-security-example, and added some other function
 To create an initial user, populate the config/email.py with working smtp details, then signup.
 use the admin interface at localhost:5000/admin to add an admin role, and grant it to your user.
 You can then swap out the is_accessible definitions in the admin views to prevent non-admin users from acessing the admin interface.
+
+Uses sqlite out of the can, but you can easily substitute your db backend of choice.
