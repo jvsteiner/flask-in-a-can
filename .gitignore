@@ -1,11 +1,11 @@
 *.pyc
-!env/__init__.py
 venv/
 static/*
 tmp/*
 !static/custom.js
 !static/style.css
 env/*
+!env/__init__.py
 migrations/*
 !env/email.py.example
 !env/env.py.example
