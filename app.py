@@ -4,9 +4,11 @@ from flask.ext.babel import Babel
 from flask.ext.mail import Mail
 from flask.ext.bcrypt import *
 from flask.ext.admin import Admin, BaseView, expose
+from flask.ext.admin.base import MenuLink
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.contrib.fileadmin import FileAdmin
 import os.path as op
+from decorators import async
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Shell, Manager
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -84,6 +86,15 @@ class User(db.Model, UserMixin):
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
+@async
+def send_security_email(msg):
+    with app.app_context():
+       mail.send(msg)
+
+@security.send_mail_task
+def async_security_email(msg):
+    send_security_email(msg)
+
 # db.create_all()
 
 # Views
@@ -115,6 +126,7 @@ admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Role, db.session))
 path = op.join(op.dirname(__file__), 'static')
 admin.add_view(MyFileView(path, '/static/', name='Static Files'))
+admin.add_link(MenuLink(name='Back Home', url='/'))
 
 if __name__ == '__main__':
     manager.run()
