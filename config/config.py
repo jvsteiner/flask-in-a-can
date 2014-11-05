@@ -14,3 +14,4 @@ SECURITY_REGISTER_USER_TEMPLATE = 'security/register.html'
 SECURITY_FORGOT_PASSWORD_TEMPLATE = 'security/reset.html'
 SECURITY_CHANGE_PASSWORD_TEMPLATE = 'security/change.html'
 PRODUCTION = False
+CUSTOM_STATIC_PATH = 'custom'

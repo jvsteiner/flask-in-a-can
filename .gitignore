@@ -1,9 +1,8 @@
 *.pyc
 venv/
 static/*
-!static/custom.js
-!static/style.css
 env/*
 !env/__init__.py
 !env/email.py.example
 !env/env.py.example
+.DS_Store

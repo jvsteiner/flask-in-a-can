@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
 from flask.ext.babel import Babel
 from flask.ext.mail import Mail
 from flask.ext.bcrypt import *
@@ -21,6 +21,7 @@ app = Flask(__name__)
 app.config.from_object('config.config')
 app.config.from_object('env.env') #overwrites config.config for production server
 app.config.from_object('env.email') #overwrites config.config for production server
+install_dir = os.path.split(os.path.realpath(__file__))[0]
 
 # Setup mail extension
 mail = Mail(app)
@@ -101,6 +102,10 @@ def async_security_email(msg):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/custom/<path:filename>')
+def custom(filename):
+    return send_from_directory(os.path.join(install_dir, app.config['CUSTOM_STATIC_PATH']), filename)
 
 @app.route('/profile')
 def profile():
