@@ -15,3 +15,6 @@ body {
   height: 60px;
   background-color: #f5f5f5;
 }
+#footer p.credit {
+  margin-top: 20px;
+}
