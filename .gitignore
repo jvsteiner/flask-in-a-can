@@ -1,7 +1,6 @@
 *.pyc
 venv/
 static/*
-tmp/*
 !static/custom.js
 !static/style.css
 env/*
