@@ -8,11 +8,11 @@
 
     $ cd flask-in-a-can
 
-3. Install dependencies:
+3. Install dependencies: instructions for virtualenv not included - you are using virtualenv, right?
 
     $ pip install -r requirements.txt
 
-4. Copy the example email config and edit the values, use env.py in production to override development settings:
+4. Copy the example email config and edit the values, use env.py in production to override development settings: If you use a capistrano style deployment technique like fabistrano, you will need to put the env/ tmp/ and static/ directories in the shared directory structure. 
 
     $ cp env/email.py.example env/email.py
 
