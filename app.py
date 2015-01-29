@@ -22,7 +22,6 @@ app = Flask(__name__)
 app.config.from_object('config.config')
 app.config.from_object('env.env') #overwrites config.config for production server
 app.config.from_object('env.email') #overwrites config.config for production server
-install_dir = op.split(op.realpath(__file__))[0]
 custom = Blueprint('custom', __name__, static_folder='custom',  static_url_path='/custom')
 app.register_blueprint(custom)
 assets = Environment(app)
@@ -110,10 +109,6 @@ def async_security_email(msg):
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/custom/<path:filename>')
-def custom(filename):
-    return send_from_directory(op.join(install_dir, app.config['CUSTOM_STATIC_PATH']), filename)
 
 @app.route('/profile')
 @login_required
