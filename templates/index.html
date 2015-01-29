@@ -9,6 +9,8 @@
 </div>
 <body>
 	{% include "_scripts.html" %}
-	<script src="{{ url_for('custom', filename='custom.js') }}"></script>
+	{% assets "js_all" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 </body>
 {% endblock %}

@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, session, redirect, url_for, Blueprint
 from flask.ext.babel import Babel
 from flask.ext.mail import Mail
 from flask.ext.bcrypt import *
@@ -7,13 +7,14 @@ from flask.ext.admin import Admin, BaseView, expose
 from flask.ext.admin.base import MenuLink
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.contrib.fileadmin import FileAdmin
+from flask.ext.assets import Environment, Bundle
 import os.path as op
 from decorators import async
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Shell, Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, LoginForm, \
-        RegisterForm, ForgotPasswordForm, current_user, login_required, url_for_security
+        RegisterForm, ForgotPasswordForm, current_user, login_required, url_for_security, roles_required
 from flask.ext.security.forms import ChangePasswordForm
 
 # Create app
@@ -22,6 +23,13 @@ app.config.from_object('config.config')
 app.config.from_object('env.env') #overwrites config.config for production server
 app.config.from_object('env.email') #overwrites config.config for production server
 install_dir = op.split(op.realpath(__file__))[0]
+custom = Blueprint('custom', __name__, static_folder='custom',  static_url_path='/custom')
+app.register_blueprint(custom)
+assets = Environment(app)
+js = Bundle('custom/custom.js', filters='jsmin', output='gen/packed.js')
+css = Bundle('custom/style.css', filters='cssmin', output='gen/packed.css')
+assets.register('js_all', js)
+assets.register('css_all', css)
 
 # Setup mail extension
 mail = Mail(app)
@@ -108,11 +116,9 @@ def custom(filename):
     return send_from_directory(op.join(install_dir, app.config['CUSTOM_STATIC_PATH']), filename)
 
 @app.route('/profile')
+@login_required
 def profile():
-    if current_user.is_authenticated():
-        return render_template('profile.html')
-    else:
-        return redirect(url_for_security('login'))
+    return render_template('profile.html')
         
 admin = Admin(app)
 

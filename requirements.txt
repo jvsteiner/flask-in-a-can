@@ -3,3 +3,6 @@ flask-admin
 flask-migrate
 flask-bcrypt
 flask-babel
+Flask-Assets
+jsmin
+cssmin

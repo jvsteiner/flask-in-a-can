@@ -7,8 +7,9 @@
 	{% else %}
 		<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
 	{% endif %}
-	<link href="{{ url_for('custom', filename='style.css') }}" rel="stylesheet">
-</head>
+	{% assets "css_all" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}</head>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
